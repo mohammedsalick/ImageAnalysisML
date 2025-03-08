@@ -1,5 +1,15 @@
-import os
 import streamlit as st
+import subprocess
+import sys
+
+@st.cache_resource
+def install_packages():
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "opencv-python-headless", "pandas", "matplotlib", "ultralytics"])
+    
+# Install dependencies before importing them
+install_packages()
+
+# Import all necessary packages (only import st once)
 import cv2
 import numpy as np
 from PIL import Image
