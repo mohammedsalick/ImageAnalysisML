@@ -13,10 +13,10 @@ os.system("pip install opencv-python-headless")
 st.set_page_config(page_title="YOLOv8 Object Detection", layout="wide", page_icon="🔍")
 
 st.title("🔍 YOLOv8 Object Detection & Model Comparison")
-st.write("Upload an **image** or use the **webcam** to detect objects!")
+st.write("Upload an *image* to detect objects!")
 
 # Sidebar Settings
-st.sidebar.header("⚙️ Settings")
+st.sidebar.header("⚙ Settings")
 confidence_threshold = st.sidebar.slider("Confidence Threshold", 0.1, 1.0, 0.5, 0.05)
 iou_threshold = st.sidebar.slider("IOU Threshold", 0.1, 1.0, 0.5, 0.05)
 
@@ -33,9 +33,6 @@ if mode == "Single Model":
     selected_model = st.sidebar.selectbox("Choose a YOLOv8 Model", list(models_dict.keys()))
 else:
     selected_models = st.sidebar.multiselect("Select Models for Comparison", list(models_dict.keys()), default=["YOLOv8n (Nano)", "YOLOv8s (Small)"])
-
-# Choose Input Type
-input_mode = st.sidebar.radio("Select Input Type", ["Image", "Webcam"])
 
 # Load Selected Models
 def load_model(model_name):
@@ -67,12 +64,8 @@ def process_image(image, model):
 
     return image_np, detected_classes, total_time
 
-# Upload or Capture Image
-uploaded_image = None
-if input_mode == "Image":
-    uploaded_image = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
-elif input_mode == "Webcam":
-    uploaded_image = st.camera_input("Take a picture")
+# Upload Image
+uploaded_image = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
 
 if uploaded_image:
     image = Image.open(uploaded_image)
@@ -89,10 +82,10 @@ if uploaded_image:
         total_objects = sum(detected_classes.values())
         avg_confidence = round((sum(detected_classes.values()) / total_objects) * 100, 2) if total_objects else 0
         st.write(f"### 📊 Accuracy Report for {selected_model}")
-        st.write(f"🔹 **Total Objects Detected:** {total_objects}")
-        st.write(f"🔹 **Average Confidence:** {avg_confidence}%")
-        st.write(f"🔹 **Processing Time:** {time_taken:.2f} sec")
-        st.write("🔹 **Detected Classes:**")
+        st.write(f"🔹 *Total Objects Detected:* {total_objects}")
+        st.write(f"🔹 *Average Confidence:* {avg_confidence}%")
+        st.write(f"🔹 *Processing Time:* {time_taken:.2f} sec")
+        st.write("🔹 *Detected Classes:*")
         st.write(detected_classes)
 
         # Download Report
@@ -126,10 +119,10 @@ if uploaded_image:
             with cols[i]:
                 st.write(f"#### {model_name}")
                 st.image(comparison_results[model_name]["Image"], caption=model_name, use_column_width=True)
-                st.write(f"📊 **Total Objects:** {comparison_results[model_name]['Total Objects']}")
-                st.write(f"⏳ **Processing Time:** {comparison_results[model_name]['Processing Time']:.2f} sec")
-                st.write(f"🔍 **Detected Classes:**")
+                st.write(f"📊 *Total Objects:* {comparison_results[model_name]['Total Objects']}")
+                st.write(f"⏳ *Processing Time:* {comparison_results[model_name]['Processing Time']:.2f} sec")
+                st.write(f"🔍 *Detected Classes:*")
                 st.write(comparison_results[model_name]["Detected Classes"])
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("💡 **Developed by Mohammed Salick** | Powered by [YOLOv8](https://ultralytics.com/) & [Streamlit](https://streamlit.io/)")
+st.sidebar.markdown("💡 *Developed by Mohammed Salick* | Powered by [YOLOv8](https://ultralytics.com/) & [Streamlit](https://streamlit.io/)")
